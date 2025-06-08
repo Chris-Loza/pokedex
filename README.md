@@ -1,0 +1,1 @@
+This is a Pokedex/team builder app for personal and portfolio uses.
