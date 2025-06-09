@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
 import "./descWindow.css";
 
-const DescWindow = ({ currentPokemon }) => {
+const DescWindow = ({ currentPokemon, currentEvoChain }) => {
   const [realPokemon, setRealPokemon] = useState(true);
+
   useEffect(() => {
     if (currentPokemon === null) {
       setRealPokemon(false);
@@ -16,7 +17,14 @@ const DescWindow = ({ currentPokemon }) => {
 
   return (
     <div className="mainContainer">
-      <div className="evoLineContainer descWindowMainContainer">Evolutions</div>
+      <div className="evoLineContainer descWindowMainContainer">
+        <p>Evolution Chain</p>
+        <p>{currentEvoChain?.chain?.species.name}</p>
+        <p>{currentEvoChain?.chain?.evolves_to[0]?.species.name}</p>
+        <p>
+          {currentEvoChain?.chain?.evolves_to[0]?.evolves_to[0]?.species.name}
+        </p>
+      </div>
       <div className="spriteContainer descWindowMainContainer">
         <div className="pokemonName">
           <p>{pokemonName}</p>
@@ -53,7 +61,14 @@ const DescWindow = ({ currentPokemon }) => {
         </div>
         <p>Toggle Shiny</p>
       </div>
-      <div className="statContainer descWindowMainContainer">Stats</div>
+      <div className="statContainer descWindowMainContainer">
+        <p>Base Stats</p>
+        {currentPokemon?.stats?.map((stat, index) => (
+          <p key={index}>
+            {stat.stat.name} {stat.base_stat}
+          </p>
+        ))}
+      </div>
     </div>
   );
 };
