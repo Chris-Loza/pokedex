@@ -1,0 +1,25 @@
+.mainContainer {
+  border: 1px solid white;
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+  width: 95%;
+  height: 95%;
+
+  .descWindowMainContainer {
+    border: 1px solid white;
+    width: 24.5%;
+    height: 95%;
+  }
+
+  .spriteContainer {
+    .pokemonSprite {
+      img {
+        &.missingNo {
+          width: 2rem;
+          height: 2rem;
+        }
+      }
+    }
+  }
+}

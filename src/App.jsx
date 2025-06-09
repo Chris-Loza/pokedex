@@ -1,19 +1,36 @@
-import { useEffect, useState } from "react";
 import "./App.css";
 import { fetchPokemon } from "./hooks/useFetchPokemon";
+import Banner from "./components/banner/Banner";
+import DescWindow from "./components/descriptionWindow/DescWindow";
+import PartyWindow from "./components/partyWindow/PartyWindow";
+import { useEffect, useState } from "react";
 
 function App() {
-  const getPokemon = async () => {
-    const currentPokemon = await fetchPokemon("charmAnder");
-    console.log(currentPokemon);
-  };
+  const [searchInput, setSearchInput] = useState("bulbasaur");
+  const [currentPokemon, setCurrentPokemon] = useState(null);
 
-  getPokemon();
+  useEffect(() => {
+    const getPokemon = async () => {
+      const currPokemon = await fetchPokemon(searchInput);
+      console.log(currPokemon);
+      setCurrentPokemon(currPokemon);
+    };
+    getPokemon();
+    console.log(currentPokemon);
+  }, [searchInput]);
 
   return (
-    <>
-      <div>Hello</div>
-    </>
+    <div className="appContainer">
+      <div className="bannerContainer compContainer">
+        <Banner />
+      </div>
+      <div className="descWindowContainer compContainer">
+        <DescWindow currentPokemon={currentPokemon} />
+      </div>
+      <div className="partyWindowContainer compContainer">
+        <PartyWindow />
+      </div>
+    </div>
   );
 }
 

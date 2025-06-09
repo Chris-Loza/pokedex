@@ -1,6 +1,6 @@
 export const fetchPokemon = async (pokemon) => {
     const pokemonName = String(pokemon).toLowerCase();
-    const url = `https://pokeapi.co/api/v2/pokemon/${pokemonName}`
+    const url = `https://pokeapi.co/api/v2/pokemon/${pokemonName}`;
 
     try {
         const response = await fetch(url);
@@ -12,5 +12,6 @@ export const fetchPokemon = async (pokemon) => {
         return data;
     } catch (error) {
         console.error(error);
+        return null;
     }
 };
