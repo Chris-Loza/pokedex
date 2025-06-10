@@ -1,8 +1,10 @@
 import { useEffect, useState } from "react";
 import "./descWindow.css";
+import { useGlobalState } from "../../lib/globalState";
 
 const DescWindow = ({ currentPokemon, currentEvoChain }) => {
   const [realPokemon, setRealPokemon] = useState(true);
+  const { currentParty, setCurrentParty } = useGlobalState();
 
   useEffect(() => {
     if (currentPokemon === null) {
@@ -15,6 +17,15 @@ const DescWindow = ({ currentPokemon, currentEvoChain }) => {
     ? currentPokemon.name.charAt(0).toUpperCase() + currentPokemon.name.slice(1)
     : "MissingNo";
 
+  const handleAddToParty = () => {
+    if (currentParty.length > 5) {
+      return;
+    }
+    const updatedParty = [...currentParty, pokemonName];
+    setCurrentParty(updatedParty);
+  };
+
+  console.log(currentParty);
   return (
     <div className="mainContainer">
       <div className="evoLineContainer descWindowMainContainer">
@@ -39,6 +50,9 @@ const DescWindow = ({ currentPokemon, currentEvoChain }) => {
             }
             alt="Pokémon Sprite"
           />
+        </div>
+        <div className="addToParty">
+          <p onClick={handleAddToParty}>Add to Party</p>
         </div>
       </div>
       <div className="descContainer descWindowMainContainer">

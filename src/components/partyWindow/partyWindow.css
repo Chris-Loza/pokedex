@@ -1,0 +1,27 @@
+.mainPartyWindowContainer {
+  width: 95%;
+  height: 95%;
+  display: flex;
+
+  .partyDisplay {
+    width: 75%;
+    border: 1px solid white;
+
+    .displayBanner {
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .displayFooter {
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+    }
+  }
+
+  .partyAnalysis {
+    border: 1px solid white;
+    width: 25%;
+  }
+}
