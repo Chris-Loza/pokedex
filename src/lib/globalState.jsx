@@ -4,7 +4,7 @@ const GlobalStateContext = createContext();
 export const GlobalStateProvider = ({ children }) => {
   const [searchedPokemon, setSearchedPokemon] = useState("missingNo");
   const [currentParty, setCurrentParty] = useState([]);
-  //   const [searchedPokemon, setSearchedPokemon] = useState("Charizard");
+  const [partyList, setPartyList] = useState([]);
 
   return (
     <GlobalStateContext.Provider
@@ -13,6 +13,8 @@ export const GlobalStateProvider = ({ children }) => {
         setSearchedPokemon,
         currentParty,
         setCurrentParty,
+        partyList,
+        setPartyList,
       }}
     >
       {children}

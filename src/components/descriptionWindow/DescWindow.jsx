@@ -4,7 +4,9 @@ import { useGlobalState } from "../../lib/globalState";
 
 const DescWindow = ({ currentPokemon, currentEvoChain }) => {
   const [realPokemon, setRealPokemon] = useState(true);
-  const { currentParty, setCurrentParty } = useGlobalState();
+  const { currentParty, setCurrentParty, searchedPokemon, setSearchedPokemon } =
+    useGlobalState();
+  const [toggleShiny, setToggleShiny] = useState(false);
 
   useEffect(() => {
     if (currentPokemon === null) {
@@ -30,9 +32,29 @@ const DescWindow = ({ currentPokemon, currentEvoChain }) => {
     <div className="mainContainer">
       <div className="evoLineContainer descWindowMainContainer">
         <p>Evolution Chain</p>
-        <p>{currentEvoChain?.chain?.species.name}</p>
-        <p>{currentEvoChain?.chain?.evolves_to[0]?.species.name}</p>
-        <p>
+        <p
+          onClick={() =>
+            setSearchedPokemon(currentEvoChain?.chain?.species.name)
+          }
+        >
+          {currentEvoChain?.chain?.species.name}
+        </p>
+        <p
+          onClick={() =>
+            setSearchedPokemon(
+              currentEvoChain?.chain?.evolves_to[0]?.species.name
+            )
+          }
+        >
+          {currentEvoChain?.chain?.evolves_to[0]?.species.name}
+        </p>
+        <p
+          onClick={() =>
+            setSearchedPokemon(
+              currentEvoChain?.chain?.evolves_to[0]?.evolves_to[0]?.species.name
+            )
+          }
+        >
           {currentEvoChain?.chain?.evolves_to[0]?.evolves_to[0]?.species.name}
         </p>
       </div>
@@ -45,7 +67,9 @@ const DescWindow = ({ currentPokemon, currentEvoChain }) => {
             className={realPokemon ? "" : "missingNo"}
             src={
               realPokemon
-                ? currentPokemon?.sprites?.front_default
+                ? toggleShiny
+                  ? currentPokemon?.sprites?.front_shiny
+                  : currentPokemon?.sprites?.front_default
                 : "../../../../images/MissingNO.webp"
             }
             alt="Pokémon Sprite"
@@ -73,7 +97,7 @@ const DescWindow = ({ currentPokemon, currentEvoChain }) => {
             </p>
           ))}
         </div>
-        <p>Toggle Shiny</p>
+        <p onClick={() => setToggleShiny(!toggleShiny)}>Toggle Shiny</p>
       </div>
       <div className="statContainer descWindowMainContainer">
         <p>Base Stats</p>
