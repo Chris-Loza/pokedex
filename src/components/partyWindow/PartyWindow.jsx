@@ -15,10 +15,15 @@ const PartyWindow = () => {
     const partyToBeAdded = {
       partyName: "",
       party: currentParty,
+      partyNum: partyList.length,
     };
     const newPartyList = [...partyList, partyToBeAdded];
     setPartyList(newPartyList);
   };
+
+  const handleDeleteParty = () => {
+    
+  }
 
   console.log(partyList);
   return (
@@ -35,7 +40,9 @@ const PartyWindow = () => {
                 </option>
                 <option value="">Party 1</option>
                 {partyList.map((party, index) => (
-                  <option key={index} value={party.partyName}>{party.partyName}</option>
+                  <option key={index} value={party.partyName}>
+                    {party.partyName}
+                  </option>
                 ))}
               </select>
             </div>
