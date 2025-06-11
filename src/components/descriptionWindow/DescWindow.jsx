@@ -20,11 +20,11 @@ const DescWindow = ({ currentPokemon, currentEvoChain }) => {
     : "MissingNo";
 
   const handleAddToParty = () => {
-    if (currentParty.length > 5) {
+    if (currentParty.party.length > 5) {
       return;
     }
-    const updatedParty = [...currentParty, pokemonName];
-    setCurrentParty(updatedParty);
+    const updatedParty = [...currentParty.party, pokemonName];
+    setCurrentParty({ ...currentParty, party: updatedParty });
   };
 
   console.log(currentParty);

@@ -6,31 +6,40 @@ const PartyWindow = () => {
   const { currentParty, setCurrentParty, partyList, setPartyList } =
     useGlobalState();
 
-  // const [newParty, setNewParty] = useState({
-  //   partyName: "",
-  //   party: [],
-  // });
+  const [newParty, setNewParty] = useState({
+    partyName: "",
+    party: [],
+    partyNum: 0,
+  });
 
   const handleAddParty = () => {
-    const partyToBeAdded = {
-      partyName: "",
-      party: currentParty,
+    setNewParty({
+      ...newParty,
+      party: currentParty.party,
       partyNum: partyList.length,
-    };
-    const newPartyList = [...partyList, partyToBeAdded];
+    });
+    const newPartyList = [...partyList, newParty];
     setPartyList(newPartyList);
   };
 
-  const handleDeleteParty = () => {
-    
-  }
-
+  const handleDeleteParty = () => {};
+  console.log(currentParty.party);
+  console.log(newParty.partyName);
   console.log(partyList);
   return (
     <div className="mainPartyWindowContainer">
       <div className="partyDisplay">
         <div className="displayBanner">
-          <p>Party Name</p>
+          <div className="partyName">
+            <input
+              type="text"
+              id="partyName"
+              placeholder="Enter Party Name"
+              onChange={(e) =>
+                setNewParty({ ...newParty, partyName: e.target.value })
+              }
+            />
+          </div>
           <div className="partyActions">
             <p>New Party</p>
             <div className="partyMenu">
@@ -48,7 +57,7 @@ const PartyWindow = () => {
             </div>
           </div>
         </div>
-        {currentParty.map((pokemon, index) => (
+        {currentParty?.party?.map((pokemon, index) => (
           <p key={index}>{pokemon}</p>
         ))}
         <div className="displayFooter">
