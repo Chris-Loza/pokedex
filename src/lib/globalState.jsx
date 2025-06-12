@@ -6,7 +6,6 @@ export const GlobalStateProvider = ({ children }) => {
   const [currentParty, setCurrentParty] = useState({
     partyName: "",
     party: [],
-    partyNum: 0,
   });
   const [partyList, setPartyList] = useState([]);
 

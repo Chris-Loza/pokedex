@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useGlobalState } from "../../lib/globalState";
 import "./partyWindow.css";
 
@@ -6,26 +6,47 @@ const PartyWindow = () => {
   const { currentParty, setCurrentParty, partyList, setPartyList } =
     useGlobalState();
 
-  const [newParty, setNewParty] = useState({
-    partyName: "",
-    party: [],
-    partyNum: 0,
-  });
+  const [newPartyName, setNewPartyName] = useState("");
 
   const handleAddParty = () => {
-    setNewParty({
-      ...newParty,
+    if (!newPartyName.trim()) return;
+
+    const fullParty = {
+      partyName: newPartyName,
       party: currentParty.party,
-      partyNum: partyList.length,
-    });
-    const newPartyList = [...partyList, newParty];
-    setPartyList(newPartyList);
+    };
+
+    setPartyList([...partyList, fullParty]);
+    setCurrentParty(fullParty);
+    setNewPartyName("");
   };
 
-  const handleDeleteParty = () => {};
-  console.log(currentParty.party);
-  console.log(newParty.partyName);
-  console.log(partyList);
+  const handleDeleteParty = () => {
+    const newPartyList = partyList.filter(
+      (party) => party.partyName !== currentParty.partyName
+    );
+    setPartyList(newPartyList);
+    setCurrentParty({ partyName: "", party: [] });
+  };
+
+  const handleSelectParty = (e) => {
+    const selectedParty = partyList.find(
+      (party) => party.partyName === e.target.value
+    );
+
+    if (selectedParty) {
+      setCurrentParty(selectedParty);
+    }
+  };
+
+  const handlePartyReset = () => {
+    setCurrentParty({
+      partyName: "",
+      party: [],
+    });
+    setNewPartyName("");
+  };
+
   return (
     <div className="mainPartyWindowContainer">
       <div className="partyDisplay">
@@ -33,21 +54,28 @@ const PartyWindow = () => {
           <div className="partyName">
             <input
               type="text"
-              id="partyName"
-              placeholder="Enter Party Name"
-              onChange={(e) =>
-                setNewParty({ ...newParty, partyName: e.target.value })
+              value={newPartyName}
+              placeholder={
+                currentParty.partyName !== ""
+                  ? currentParty.partyName
+                  : "Enter Party Name"
               }
+              onChange={(e) => setNewPartyName(e.target.value)}
             />
+            <div className="submitNameIcon" onClick={handleAddParty}>
+              Save
+            </div>
           </div>
           <div className="partyActions">
-            <p>New Party</p>
+            <p onClick={handlePartyReset}>New Party</p>
             <div className="partyMenu">
-              <select defaultValue="">
+              <select
+                value={currentParty.partyName}
+                onChange={handleSelectParty}
+              >
                 <option value="" disabled hidden>
                   Select Party
                 </option>
-                <option value="">Party 1</option>
                 {partyList.map((party, index) => (
                   <option key={index} value={party.partyName}>
                     {party.partyName}
@@ -61,8 +89,7 @@ const PartyWindow = () => {
           <p key={index}>{pokemon}</p>
         ))}
         <div className="displayFooter">
-          <p onClick={handleAddParty}>Save Party</p>
-          <p>Delete Party</p>
+          <p onClick={handleDeleteParty}>Delete Party</p>
         </div>
       </div>
       <div className="partyAnalysis">
