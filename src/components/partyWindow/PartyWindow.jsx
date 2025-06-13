@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useGlobalState } from "../../lib/globalState";
 import "./partyWindow.css";
+import { determineTypeCoverages } from "../../hooks/useDetermineTypeCoverages";
 
 const PartyWindow = () => {
   const { currentParty, setCurrentParty, partyList, setPartyList } =
@@ -47,6 +48,15 @@ const PartyWindow = () => {
     setNewPartyName("");
   };
 
+  const [unaffectedTypes, setUnaffectedTypes] = useState([]);
+  const [resistedTypes, setResistedTypes] = useState([]);
+  const [neutralTypes, setNeutralTypes] = useState([]);
+  const [superEffectedTypes, setSuperEffectedTypes] = useState([]);
+  // const handleTypeMatchUps = () => {
+  //   currentParty.typesPresent.forEach((type) => {
+  //     determineTypeCoverages(type);
+  //   });
+  // };
   return (
     <div className="mainPartyWindowContainer">
       <div className="partyDisplay">
@@ -94,8 +104,26 @@ const PartyWindow = () => {
       </div>
       <div className="partyAnalysis">
         <p>Party Analysis</p>
-        <p>Type Coverage</p>
-        <p>Type Weaknesses</p>
+        <div className="typingContainer">
+          <div className="typesPresent">
+            <p>Types Present:</p>
+            {currentParty.typesPresent.map((type, index) => (
+              <p key={index}>{type}</p>
+            ))}
+          </div>
+          <div className="noEffect">
+            <p>No Effect:</p>
+          </div>
+          <div className="resisted">
+            <p>Resisted:</p>
+          </div>
+          <div className="neutral">
+            <p>Neutral:</p>
+          </div>
+          <div className="superEffective">
+            <p>Super Effective:</p>
+          </div>
+        </div>
       </div>
     </div>
   );

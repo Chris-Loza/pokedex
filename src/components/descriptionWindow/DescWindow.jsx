@@ -23,8 +23,21 @@ const DescWindow = ({ currentPokemon, currentEvoChain }) => {
     if (currentParty.party.length > 5) {
       return;
     }
+    const updatedPokemonTypes = [...currentParty.typesPresent];
+    currentPokemon.types.forEach((type) => {
+      const typeName = type.type.name;
+      if (!updatedPokemonTypes.includes(typeName)) {
+        updatedPokemonTypes.push(typeName);
+      }
+    });
+
+    console.log(updatedPokemonTypes);
     const updatedParty = [...currentParty.party, pokemonName];
-    setCurrentParty({ ...currentParty, party: updatedParty });
+    setCurrentParty({
+      ...currentParty,
+      party: updatedParty,
+      typesPresent: updatedPokemonTypes,
+    });
   };
 
   console.log(currentParty);
