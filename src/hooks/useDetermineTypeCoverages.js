@@ -1,4 +1,9 @@
 export const determineTypeCoverages = (type) => {
+  const unaffectedTypes = [];
+  const resistedTypes = [];
+  const neutralTypes = [];
+  const superEffectedTypes = [];
+  const allTypes = ["normal", "fire", "water", "electric", "grass", "ice", "fighting", "poison", "ground", "flying", "psychic", "bug", "rock", "ghost", "dragon", "dark", "steel", "fairy"];
   const typeChart = {
     normal: {
       rock: 0.5,
@@ -68,7 +73,7 @@ export const determineTypeCoverages = (type) => {
     },
     poison: {
       grass: 2,
-      posion: 0.5,
+      poison: 0.5,
       ground: 0.5,
       rock: 0.5,
       ghost: 0.5,
@@ -157,4 +162,20 @@ export const determineTypeCoverages = (type) => {
       steel: 0.5,
     },
   };
+
+  const currentTypeChart = typeChart[type] ?? {};
+  allTypes.forEach((defType) => {
+    const mult = currentTypeChart[defType] ?? 1;
+    if (mult === 0) {
+      unaffectedTypes.push(defType);
+    } else if (mult < 1) {
+      resistedTypes.push(defType);
+    } else if (mult > 1) {
+      superEffectedTypes.push(defType);
+    } else {
+      neutralTypes.push(defType);
+    }
+  });
+
+  return [unaffectedTypes, resistedTypes, neutralTypes, superEffectedTypes];
 };

@@ -52,11 +52,35 @@ const PartyWindow = () => {
   const [resistedTypes, setResistedTypes] = useState([]);
   const [neutralTypes, setNeutralTypes] = useState([]);
   const [superEffectedTypes, setSuperEffectedTypes] = useState([]);
-  // const handleTypeMatchUps = () => {
-  //   currentParty.typesPresent.forEach((type) => {
-  //     determineTypeCoverages(type);
-  //   });
-  // };
+  const handleTypeMatchUps = () => {
+    currentParty.typesPresent.forEach((type) => {
+      const [unaffected, resisted, neutral, superEff] =
+        determineTypeCoverages(type);
+
+      const unaffectedSet = new Set();
+      const resistedSet = new Set();
+      const neutralSet = new Set();
+      const superEffSet = new Set();
+
+      unaffected.forEach((type) => unaffectedSet.add(type));
+      resisted.forEach((type) => resistedSet.add(type));
+      neutral.forEach((type) => neutralSet.add(type));
+      superEff.forEach((type) => superEffSet.add(type));
+
+      setUnaffectedTypes([...unaffectedSet]);
+      setResistedTypes([...resistedSet]);
+      setNeutralTypes([...neutralSet]);
+      setSuperEffectedTypes([...superEffSet]);
+    });
+  };
+
+  useEffect(() => {
+    handleTypeMatchUps();
+    console.log("Unaffected Types: ", unaffectedTypes);
+    console.log("Resisted Types: ", resistedTypes);
+    console.log("Neutral Types: ", neutralTypes);
+    console.log("Super Effected Types: ", superEffectedTypes);
+  }, [currentParty]);
   return (
     <div className="mainPartyWindowContainer">
       <div className="partyDisplay">
@@ -111,17 +135,37 @@ const PartyWindow = () => {
               <p key={index}>{type}</p>
             ))}
           </div>
-          <div className="noEffect">
+          <div className="noEffect coverage">
             <p>No Effect:</p>
+            <div className="matchUps">
+              {unaffectedTypes.map((type, index) => (
+                <p key={index}>{type}</p>
+              ))}
+            </div>
           </div>
-          <div className="resisted">
+          <div className="resisted coverage">
             <p>Resisted:</p>
+            <div className="matchUps">
+              {resistedTypes.map((type, index) => (
+                <p key={index}>{type}</p>
+              ))}
+            </div>
           </div>
-          <div className="neutral">
+          <div className="neutral coverage">
             <p>Neutral:</p>
+            <div className="matchUps">
+              {neutralTypes.map((type, index) => (
+                <p key={index}>{type}</p>
+              ))}
+            </div>
           </div>
-          <div className="superEffective">
-            <p>Super Effective:</p>
+          <div className="superEffective coverage">
+            <p>Super Effective On:</p>
+            <div className="matchUps">
+              {superEffectedTypes.map((type, index) => (
+                <p key={index}>{type}</p>
+              ))}
+            </div>
           </div>
         </div>
       </div>

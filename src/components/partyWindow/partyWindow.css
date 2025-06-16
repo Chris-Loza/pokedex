@@ -31,5 +31,14 @@
   .partyAnalysis {
     border: 1px solid white;
     width: 25%;
+
+    .typingContainer {
+      .coverage {
+        .matchUps {
+          display: flex;
+          flex-wrap: wrap;
+        }
+      }
+    }
   }
 }
