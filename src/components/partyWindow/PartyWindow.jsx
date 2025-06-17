@@ -2,25 +2,41 @@ import { useEffect, useState } from "react";
 import { useGlobalState } from "../../lib/globalState";
 import "./partyWindow.css";
 import { determineTypeCoverages } from "../../hooks/useDetermineTypeCoverages";
+import { determineTypesPresent } from "../../hooks/useDetermineTypesPresent";
 
 const PartyWindow = () => {
-  const { currentParty, setCurrentParty, partyList, setPartyList } =
-    useGlobalState();
+  const {
+    currentParty,
+    setCurrentParty,
+    partyList,
+    setPartyList,
+    setSearchedPokemon,
+  } = useGlobalState();
 
   const [newPartyName, setNewPartyName] = useState("");
 
   const handleAddParty = () => {
-    if (!newPartyName.trim()) return;
+    if (!newPartyName.trim()) {
+      alert("The party is missing a name!");
+      return;
+    }
+    const partyExists = partyList.find(
+      (party) => party.partyName === newPartyName
+    );
 
-    const fullParty = {
-      partyName: newPartyName,
-      party: currentParty.party,
-      typesPresent: currentParty.typesPresent || [],
-    };
+    if (!partyExists) {
+      const fullParty = {
+        partyName: newPartyName,
+        party: currentParty.party,
+        typesPresent: currentParty.typesPresent || [],
+      };
 
-    setPartyList([...partyList, fullParty]);
-    setCurrentParty(fullParty);
-    setNewPartyName("");
+      setPartyList([...partyList, fullParty]);
+      setCurrentParty(fullParty);
+      setNewPartyName("");
+    } else {
+      alert("A team with this name already exists.");
+    }
   };
 
   const handleDeleteParty = () => {
@@ -90,8 +106,30 @@ const PartyWindow = () => {
     });
   };
 
+  const handleRemoveFromParty = async (index) => {
+    if (currentParty.party.length < 2) {
+      alert("You cannot have less than 1 Pokemon in a party!");
+      return;
+    }
+    const updatedParty = currentParty.party.filter((_, i) => i !== index);
+    const currentTypes = await determineTypesPresent(updatedParty);
+    const updated = {
+      ...currentParty,
+      party: updatedParty,
+      typesPresent: currentTypes,
+    };
+    setCurrentParty(updated);
+
+    setPartyList((prev) =>
+      prev.map((p) =>
+        p.partyName === currentParty.partyName ? { ...updated } : p
+      )
+    );
+  };
+
   useEffect(() => {
     handleTypeMatchUps();
+    console.log(currentParty);
   }, [currentParty]);
   return (
     <div className="mainPartyWindowContainer">
@@ -132,7 +170,12 @@ const PartyWindow = () => {
           </div>
         </div>
         {currentParty?.party?.map((pokemon, index) => (
-          <p key={index}>{pokemon}</p>
+          <div key={index} className="party">
+            <div className="partyPokemon">
+              <p onClick={() => setSearchedPokemon(pokemon)}>{pokemon}</p>
+            </div>
+            <p onClick={() => handleRemoveFromParty(index)}>Remove</p>
+          </div>
         ))}
         <div className="displayFooter">
           <p onClick={handleDeleteParty}>Delete Party</p>

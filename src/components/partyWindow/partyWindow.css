@@ -21,6 +21,10 @@
       }
     }
 
+    .party {
+      display: flex;
+    }
+
     .displayFooter {
       width: 100%;
       display: flex;

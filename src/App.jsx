@@ -10,7 +10,6 @@ import { fetchPokemonEvolutionChain } from "./hooks/useFetchPokemonEvolutionChai
 
 function App() {
   const { searchedPokemon, setSearchedPokemon } = useGlobalState();
-  // const [searchInput, setSearchInput] = useState("bulbasaur");
   const [currentPokemon, setCurrentPokemon] = useState(null);
   const [currentPokemonSpecies, setCurrentPokemonSpecies] = useState(null);
   const [currentEvoChain, setCurrentEvoChain] = useState(null);

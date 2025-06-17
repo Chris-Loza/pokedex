@@ -40,7 +40,7 @@ const DescWindow = ({ currentPokemon, currentEvoChain }) => {
     });
   };
 
-  console.log(currentParty);
+  // console.log(currentParty);
   return (
     <div className="mainContainer">
       <div className="evoLineContainer descWindowMainContainer">
