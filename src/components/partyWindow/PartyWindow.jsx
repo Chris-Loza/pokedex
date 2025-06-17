@@ -127,6 +127,28 @@ const PartyWindow = () => {
     );
   };
 
+  const handlePartyUpdate = () => {
+    const partyIndex = partyList.findIndex(
+      (party) => party.partyName === currentParty.partyName
+    );
+
+    if (partyIndex !== -1) {
+      const updatedParty = {
+        ...partyList[partyIndex],
+        partyName: newPartyName !== "" ? newPartyName : currentParty.partyName,
+        party: currentParty.party,
+        typesPresent: currentParty.typesPresent,
+      };
+
+      const updatedList = [
+        ...partyList.slice(0, partyIndex),
+        updatedParty,
+        ...partyList.slice(partyIndex + 1),
+      ];
+      setPartyList(updatedList);
+    }
+  };
+
   useEffect(() => {
     handleTypeMatchUps();
     console.log(currentParty);
@@ -146,8 +168,12 @@ const PartyWindow = () => {
               }
               onChange={(e) => setNewPartyName(e.target.value)}
             />
-            <div className="submitNameIcon" onClick={handleAddParty}>
-              Save
+            <div className="submitNameIcon">
+              {partyList.some((p) => p.partyName === currentParty.partyName) ? (
+                <p onClick={handlePartyUpdate}>Update</p>
+              ) : (
+                <p onClick={handleAddParty}>Save</p>
+              )}
             </div>
           </div>
           <div className="partyActions">
