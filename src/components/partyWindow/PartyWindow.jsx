@@ -15,6 +15,7 @@ const PartyWindow = () => {
     const fullParty = {
       partyName: newPartyName,
       party: currentParty.party,
+      typesPresent: currentParty.typesPresent || [],
     };
 
     setPartyList([...partyList, fullParty]);
@@ -27,7 +28,12 @@ const PartyWindow = () => {
       (party) => party.partyName !== currentParty.partyName
     );
     setPartyList(newPartyList);
-    setCurrentParty({ partyName: "", party: [] });
+    setCurrentParty({ partyName: "", party: [], typesPresent: [] });
+    setUnaffectedTypes([]);
+    setResistedTypes([]);
+    setNeutralTypes([]);
+    setSuperEffectedTypes([]);
+    setWeaknesses([]);
   };
 
   const handleSelectParty = (e) => {
@@ -44,42 +50,48 @@ const PartyWindow = () => {
     setCurrentParty({
       partyName: "",
       party: [],
+      typesPresent: [],
     });
     setNewPartyName("");
+    setUnaffectedTypes([]);
+    setResistedTypes([]);
+    setNeutralTypes([]);
+    setSuperEffectedTypes([]);
+    setWeaknesses([]);
   };
 
   const [unaffectedTypes, setUnaffectedTypes] = useState([]);
   const [resistedTypes, setResistedTypes] = useState([]);
   const [neutralTypes, setNeutralTypes] = useState([]);
   const [superEffectedTypes, setSuperEffectedTypes] = useState([]);
+  const [weaknesses, setWeaknesses] = useState([]);
   const handleTypeMatchUps = () => {
-    currentParty.typesPresent.forEach((type) => {
-      const [unaffected, resisted, neutral, superEff] =
+    currentParty?.typesPresent?.forEach((type) => {
+      const [unaffected, resisted, neutral, superEff, weaknesses] =
         determineTypeCoverages(type);
 
       const unaffectedSet = new Set();
       const resistedSet = new Set();
       const neutralSet = new Set();
       const superEffSet = new Set();
+      const weakSet = new Set();
 
       unaffected.forEach((type) => unaffectedSet.add(type));
       resisted.forEach((type) => resistedSet.add(type));
       neutral.forEach((type) => neutralSet.add(type));
       superEff.forEach((type) => superEffSet.add(type));
+      weaknesses.forEach((type) => weakSet.add(type));
 
       setUnaffectedTypes([...unaffectedSet]);
       setResistedTypes([...resistedSet]);
       setNeutralTypes([...neutralSet]);
       setSuperEffectedTypes([...superEffSet]);
+      setWeaknesses([...weakSet]);
     });
   };
 
   useEffect(() => {
     handleTypeMatchUps();
-    console.log("Unaffected Types: ", unaffectedTypes);
-    console.log("Resisted Types: ", resistedTypes);
-    console.log("Neutral Types: ", neutralTypes);
-    console.log("Super Effected Types: ", superEffectedTypes);
   }, [currentParty]);
   return (
     <div className="mainPartyWindowContainer">
@@ -131,9 +143,17 @@ const PartyWindow = () => {
         <div className="typingContainer">
           <div className="typesPresent">
             <p>Types Present:</p>
-            {currentParty.typesPresent.map((type, index) => (
+            {currentParty?.typesPresent?.map((type, index) => (
               <p key={index}>{type}</p>
             ))}
+          </div>
+          <div className="weaknesses coverage">
+            <p>Weak To:</p>
+            <div className="matchUps">
+              {weaknesses.map((type, index) => (
+                <p key={index}>{type}</p>
+              ))}
+            </div>
           </div>
           <div className="noEffect coverage">
             <p>No Effect:</p>

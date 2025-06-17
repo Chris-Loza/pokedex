@@ -3,6 +3,7 @@ export const determineTypeCoverages = (type) => {
   const resistedTypes = [];
   const neutralTypes = [];
   const superEffectedTypes = [];
+  const weaknesses = [];
   const allTypes = ["normal", "fire", "water", "electric", "grass", "ice", "fighting", "poison", "ground", "flying", "psychic", "bug", "rock", "ghost", "dragon", "dark", "steel", "fairy"];
   const typeChart = {
     normal: {
@@ -177,5 +178,12 @@ export const determineTypeCoverages = (type) => {
     }
   });
 
-  return [unaffectedTypes, resistedTypes, neutralTypes, superEffectedTypes];
+  Object.keys(typeChart).forEach((atkType) => {
+    const mult = typeChart[atkType]?.[type] ?? 1;
+    if (mult > 1) {
+      weaknesses.push(atkType);
+    }
+  });
+
+  return [unaffectedTypes, resistedTypes, neutralTypes, superEffectedTypes, weaknesses];
 };
