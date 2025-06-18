@@ -40,7 +40,6 @@ const DescWindow = ({ currentPokemon, currentEvoChain }) => {
     });
   };
 
-  // console.log(currentParty);
   return (
     <div className="mainContainer">
       <div className="evoLineContainer descWindowMainContainer">
@@ -95,11 +94,14 @@ const DescWindow = ({ currentPokemon, currentEvoChain }) => {
       <div className="descContainer descWindowMainContainer">
         <div className="typesContainer">
           <p>Type:</p>
-          {currentPokemon?.types?.map((type, index) => (
-            <p key={index}>
-              {type.type.name.charAt(0).toUpperCase() + type.type.name.slice(1)}
-            </p>
-          ))}
+          <div className="types">
+            {currentPokemon?.types?.map((type, index) => (
+              <p key={index} className={`type ${type.type.name}`}>
+                {type.type.name.charAt(0).toUpperCase() +
+                  type.type.name.slice(1)}
+              </p>
+            ))}
+          </div>
         </div>
         <div className="abilitiesContainer">
           <p>Abilities:</p>
